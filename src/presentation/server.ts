@@ -1,9 +1,10 @@
-import express from 'express';
+import express, { Router } from 'express';
 import path from 'path';
 
 interface Options {
     port: number;
     public_path?: string;
+    routes: Router;
 }
 
 export class Server {
@@ -12,12 +13,14 @@ export class Server {
     //fuera de ahí ya no se pueden cambiar
     private readonly port: number;
     private readonly publicPath: string;
+    private readonly routes:Router;
 
 
     constructor(options: Options){
-        const {port, public_path = 'public'} = options;
+        const {port, routes, public_path = 'public'} = options;
         this.port = port;
         this.publicPath = public_path;
+        this.routes = routes
 
     }
 
@@ -27,7 +30,14 @@ export class Server {
         // Public Folder
         this.app.use(express.static(this.publicPath));
 
+        //Routes
+        this.app.use(this.routes);
+
         //Aquí cachamos todas las rutas que no estan definidas
+        //Para SPA :
+            // Una SPA (Single Page Application) es una aplicación web
+            // que se carga y se ejecuta completamente en la página web de un usuario,
+            // en lugar de cargar nuevas páginas con cada interacción.
         this.app.get('/*splat',async (req, res) => {
             // console.log(req.url);
             // res.send('Hello world');
