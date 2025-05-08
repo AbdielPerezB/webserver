@@ -4,20 +4,16 @@
 // un constructor. Se pueden manejar static methods.
 // Nota: Esto es OPINADO
 import { Router } from 'express'
+import { TodoRoutes } from './todos/routes';
 
 
 export class AppRoutes {
 
     static get routes(): Router {
         const router = Router();
-        router.get('/api/todos', (req, res) => {
-            res.json([
-                { id: 1, text: 'Buy milk', createdAt: new Date() },
-                { id: 2, text: 'Buy milk', createdAt: new Date() },
-                { id: 3, text: 'Buy milk', createdAt: new Date() },
-            ]);
 
-        });
+        //Mandamos la referencia a la función, es lo mismo que
+        router.use('/api/todos', TodoRoutes.routes);
         return router
     }
 

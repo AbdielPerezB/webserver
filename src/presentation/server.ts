@@ -26,6 +26,8 @@ export class Server {
 
     async start () {
         // MOddleweares
+        this.app.use(express.json()) //Para que todos los datos que lleguen al API se parseen a JSON. Raw
+        this.app.use(express.urlencoded({extended: true}))//Permite el x-www-form-urlenconded
 
         // Public Folder
         this.app.use(express.static(this.publicPath));
